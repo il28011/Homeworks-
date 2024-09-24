@@ -17,13 +17,32 @@ class Notifications {
         }, {});
     }
 
-    // Додаємо ітератор
-    *[Symbol.iterator]() {
-        for (const key in this.groups) {
-            for (const notification of this.groups[key]) {
-                yield notification; // Повертаємо сповіщення по одному
+    // Додаємо ітератор вручну
+    [Symbol.iterator]() {
+        let groupKeys = Object.keys(this.groups); // Отримуємо ключі для груп
+        let currentGroupIndex = 0; // Індекс поточної групи
+        let currentNotificationIndex = 0; // Індекс поточного сповіщення у групі
+
+        return {
+            next: () => {
+                // Якщо поточна група вийшла за межі, переходимо до наступної
+                if (currentNotificationIndex >= this.groups[groupKeys[currentGroupIndex]].length) {
+                    currentGroupIndex++;
+                    currentNotificationIndex = 0; // Повертаємо індекс сповіщень до 0
+                }
+
+                // Якщо групи закінчились, ітерація завершена
+                if (currentGroupIndex >= groupKeys.length) {
+                    return { done: true };
+                }
+
+                // Отримуємо поточне сповіщення
+                const currentNotification = this.groups[groupKeys[currentGroupIndex]][currentNotificationIndex];
+                currentNotificationIndex++; // Переходимо до наступного сповіщення
+                
+                return { value: currentNotification, done: false };
             }
-        }
+        };
     }
 }
 

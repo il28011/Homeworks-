@@ -1,5 +1,6 @@
 function uniqueValues(arr1, arr2) {
-    return Array.from(new Set([...arr1, ...arr2]));
+    let combinedArray = [...arr1, ...arr2];
+    return combinedArray.filter((value, index, array) => array.indexOf(value) === index);
 }
 
 const array1 = [1, 2, 3, 4, 5];

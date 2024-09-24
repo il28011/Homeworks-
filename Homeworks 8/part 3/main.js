@@ -1,8 +1,12 @@
 function analyzeArray(arr) {
     const sum = arr.reduce((acc, curr) => acc + curr, 0);
     const average = sum / arr.length;
-    const min = Math.min(...arr);
-    const max = Math.max(...arr);
+
+    // Реалізація пошуку мінімального значення через reduce
+    const min = arr.reduce((acc, curr) => (curr < acc ? curr : acc), arr[0]);
+
+    // Реалізація пошуку максимального значення через reduce
+    const max = arr.reduce((acc, curr) => (curr > acc ? curr : acc), arr[0]);
 
     return {
         sum: sum,
